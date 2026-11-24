@@ -1,0 +1,4 @@
+# Leadory
+Piloto estático responsivo. Abra index.html em navegador ou sirva com python -m http.server 8000. Dashboard e gráfico calculados a partir de registros manuais locais; CRM com mudança de etapa; configuração persistida no navegador. Não inserir dados reais sensíveis no piloto local. Não há descoberta, autenticação ou disparo real ainda.
+## Backend
+Criar projeto Supabase dedicado na organização confirmada pelo proprietário. Aplicar supabase/schema.sql via SQL Editor ou migration versionada. Configurar URL e chave publishable no ambiente do frontend; nunca publicar secrets. Implementar autenticação antes de habilitar dados reais. GitHub contém código; Supabase hospeda banco e funções, não o frontend. Consulte CLAUDE.md.
