@@ -22,9 +22,9 @@ const body={textQuery:niche+' em '+city,languageCode:'pt-BR',regionCode:'BR',pag
 const places=new Map();let next;
 for(let i=0;i<3;i++){
 const data=await get('https://places.googleapis.com/v1/places:searchText',{method:'POST',headers:{'Content-Type':'application/json','X-Goog-Api-Key':key,'X-Goog-FieldMask':'places.id,places.displayName,places.formattedAddress,places.location,places.businessStatus,places.internationalPhoneNumber,places.websiteUri,places.googleMapsUri,nextPageToken'},body:JSON.stringify({...body,...(next?{pageToken:next}:{})})});
-for(const p of data.places||[]){if(!p.id||!p.location||p.businessStatus!=='OPERATIONAL')continue;const distance=dist(p.location.latitude,p.location.longitude);if(distance>radius||(b.requirePhone&&!p.internationalPhoneNumber))continue;places.set(p.id,{id:p.id,name:p.displayName?.text||'',address:p.formattedAddress||'',phone:p.internationalPhoneNumber||'',website:p.websiteUri||'',maps:p.googleMapsUri||'',distance:Math.round(distance*10)/10})}
+for(const p of data.places||[]){if(!p.id||!p.location||p.businessStatus!=='OPERATIONAL')continue;const distance=dist(p.location.latitude,p.location.longitude);if(distance>radius||(b.requirePhone&&!p.internationalPhoneNumber))continue;places.set(p.id,{id:p.id,name:p.displayName?.text||'',address:p.formattedAddress||'',phone:p.internationalPhoneNumber||'',website:p.websiteUri||'',maps:p.googleMapsUri||'',distance:Math.round(distance*10)/10,lat:p.location.latitude,lng:p.location.longitude})}
 next=data.nextPageToken;if(!next||places.size>=limit)break;
 }
-let results=[...places.values()];if(b.prioritizeNoSite)results.sort((a,b)=>Number(!!a.website)-Number(!!b.website));return res.json({results:results.slice(0,limit),note:'Consulta limitada a três páginas. Ausência de site cadastrado não comprova inexistência de site. Fonte: Google Maps.'});
+let results=[...places.values()];if(b.prioritizeNoSite)results.sort((a,b)=>Number(!!a.website)-Number(!!b.website));return res.json({results:results.slice(0,limit),center:{lat,lng},radius,city,note:'Consulta limitada a três páginas. Ausência de site cadastrado não comprova inexistência de site. Fonte: Google Maps.'});
 }catch(e){return res.status(502).json({error: /^Google Places HTTP/.test(e.message)?e.message:'Falha na consulta ao Google. Verifique APIs, faturamento e restrições.'})}
 };
