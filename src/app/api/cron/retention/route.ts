@@ -11,3 +11,6 @@ export async function POST(req: NextRequest) {
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ purged: data });
 }
+
+/** Vercel Cron chama via GET com Authorization: Bearer CRON_SECRET. */
+export const GET = POST;

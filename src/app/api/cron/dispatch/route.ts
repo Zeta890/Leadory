@@ -46,3 +46,6 @@ export async function POST(req: NextRequest) {
   }
   return NextResponse.json({ processed: results.length, results });
 }
+
+/** Vercel Cron chama via GET com Authorization: Bearer CRON_SECRET. */
+export const GET = POST;

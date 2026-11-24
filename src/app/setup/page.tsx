@@ -32,7 +32,7 @@ export default function SetupPage() {
           ))}
         </CardContent>
       </Card>
-      {s.supabase && <a href="/login" className="mt-6 inline-block text-sm text-primary-strong hover:underline">Ir para o login →</a>}
+      {s.supabase && <a href="/login" className="mt-6 inline-block text-sm text-primary-strong hover:underline">Ir para o login</a>}
     </main>
   );
 }
