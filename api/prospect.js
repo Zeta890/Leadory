@@ -1,12 +1,8 @@
-const crypto=require('node:crypto');
 module.exports=async function(req,res){
 res.setHeader('Cache-Control','no-store');
 if(req.method!=='POST')return res.status(405).json({error:'Use POST'});
-const key=process.env.GOOGLE_PLACES_API_KEY, pass=process.env.LEADORY_SEARCH_PASSWORD;
-if(!key||!pass)return res.status(503).json({error:'Configure GOOGLE_PLACES_API_KEY e LEADORY_SEARCH_PASSWORD na Vercel'});
-const supplied=String(req.headers['x-leadory-password']||'');
-const hash=v=>crypto.createHash('sha256').update(v).digest();
-if(!crypto.timingSafeEqual(hash(pass),hash(supplied)))return res.status(401).json({error:'Senha de pesquisa inválida'});
+const key=process.env.GOOGLE_PLACES_API_KEY;
+if(!key)return res.status(503).json({error:'Configure GOOGLE_PLACES_API_KEY na Vercel'});
 try{
 const b=typeof req.body==='string'?JSON.parse(req.body):req.body||{};
 const niche=String(b.niche||'').trim(),city=String(b.city||'').trim(),radius=Number(b.radius),limit=Number(b.limit);
